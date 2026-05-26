@@ -1,14 +1,14 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auth-store';
 import { api } from '@/services/api';
-import { LayoutDashboard, PieChart, Eye, Bell, Target, LogOut } from 'lucide-react';
+import { LayoutDashboard, PieChart, Eye, Bell, Settings, LogOut } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/portfolios', icon: PieChart, label: 'Portfolios' },
   { to: '/watchlists', icon: Eye, label: 'Watchlists' },
   { to: '/alerts', icon: Bell, label: 'Alerts' },
-  { to: '/goals', icon: Target, label: 'Goals' },
+  { to: '/preferences', icon: Settings, label: 'Settings' },
 ];
 
 export function Layout() {

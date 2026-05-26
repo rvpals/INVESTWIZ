@@ -5,6 +5,7 @@ import { Layout } from '@/components/layout';
 import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
 import { DashboardPage } from '@/pages/dashboard';
+import { PreferencesPage } from '@/pages/preferences';
 import type { ReactNode } from 'react';
 
 const queryClient = new QueryClient({
@@ -61,6 +62,7 @@ export function App() {
             <Route path="/watchlists" element={<Placeholder title="Watchlists" />} />
             <Route path="/alerts" element={<Placeholder title="Alerts" />} />
             <Route path="/goals" element={<Placeholder title="Goals" />} />
+            <Route path="/preferences" element={<PreferencesPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
