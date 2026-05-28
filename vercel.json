@@ -1,9 +1,5 @@
 {
-  "buildCommand": "pnpm build",
-  "outputDirectory": "dist",
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/[[...route]].ts" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
