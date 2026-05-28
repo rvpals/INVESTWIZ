@@ -1,7 +1,9 @@
 {
-  "framework": "vite",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/[[...route]]" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/api/[[...route]].ts" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
