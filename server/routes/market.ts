@@ -1,7 +1,9 @@
 import { Hono } from 'hono';
 import { authMiddleware } from '../middleware/auth';
 
-export const marketRoutes = new Hono();
+type AuthEnv = { Variables: { auth: { userId: string } } };
+
+export const marketRoutes = new Hono<AuthEnv>();
 
 marketRoutes.use('*', authMiddleware);
 
@@ -29,22 +31,22 @@ marketRoutes.get('/quotes', async (c) => {
 
 marketRoutes.get('/history/:symbol', async (c) => {
   const symbol = c.req.param('symbol');
-  const _range = c.req.query('range') || '1m';
-  const _interval = c.req.query('interval') || '1d';
+  void c.req.query('range');
+  void c.req.query('interval');
 
   // TODO: Implement Yahoo Finance historical data
   return c.json({ symbol, data: [] });
 });
 
 marketRoutes.get('/search', async (c) => {
-  const _query = c.req.query('q') || '';
+  void c.req.query('q');
 
   // TODO: Implement Yahoo Finance search
   return c.json({ results: [] });
 });
 
 marketRoutes.get('/news', async (c) => {
-  const _symbol = c.req.query('symbol');
+  void c.req.query('symbol');
 
   // TODO: Implement Yahoo Finance news
   return c.json({ news: [] });

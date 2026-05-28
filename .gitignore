@@ -3,7 +3,9 @@ node_modules/
 
 # Build output
 dist/
+dist-node/
 dist-ssr/
+*.tsbuildinfo
 
 # Environment
 .env

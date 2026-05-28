@@ -6,7 +6,9 @@ import { portfolios, transactions, holdings } from '../db/schema';
 import { authMiddleware } from '../middleware/auth';
 import { generateId } from '../utils/id';
 
-export const portfolioRoutes = new Hono();
+type AuthEnv = { Variables: { auth: { userId: string } } };
+
+export const portfolioRoutes = new Hono<AuthEnv>();
 
 portfolioRoutes.use('*', authMiddleware);
 

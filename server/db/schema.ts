@@ -24,9 +24,9 @@ export const portfolios = sqliteTable('portfolios', {
   currency: text('currency').notNull().default('USD'),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  index('idx_portfolios_user_id').on(table.userId),
-]);
+}, (table) => ({
+  userIdIdx: index('idx_portfolios_user_id').on(table.userId),
+}));
 
 export const transactions = sqliteTable('transactions', {
   id: text('id').primaryKey(),
@@ -39,11 +39,11 @@ export const transactions = sqliteTable('transactions', {
   date: text('date').notNull(),
   notes: text('notes'),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  index('idx_transactions_portfolio_id').on(table.portfolioId),
-  index('idx_transactions_symbol').on(table.symbol),
-  index('idx_transactions_date').on(table.date),
-]);
+}, (table) => ({
+  portfolioIdIdx: index('idx_transactions_portfolio_id').on(table.portfolioId),
+  symbolIdx: index('idx_transactions_symbol').on(table.symbol),
+  dateIdx: index('idx_transactions_date').on(table.date),
+}));
 
 export const holdings = sqliteTable('holdings', {
   id: text('id').primaryKey(),
@@ -55,20 +55,20 @@ export const holdings = sqliteTable('holdings', {
   avgCost: real('avg_cost').notNull(),
   totalCost: real('total_cost').notNull(),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  index('idx_holdings_portfolio_id').on(table.portfolioId),
-  index('idx_holdings_symbol').on(table.symbol),
-  uniqueIndex('idx_holdings_portfolio_symbol').on(table.portfolioId, table.symbol),
-]);
+}, (table) => ({
+  portfolioIdIdx: index('idx_holdings_portfolio_id').on(table.portfolioId),
+  symbolIdx: index('idx_holdings_symbol').on(table.symbol),
+  portfolioSymbolUniq: uniqueIndex('idx_holdings_portfolio_symbol').on(table.portfolioId, table.symbol),
+}));
 
 export const watchlists = sqliteTable('watchlists', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  index('idx_watchlists_user_id').on(table.userId),
-]);
+}, (table) => ({
+  userIdIdx: index('idx_watchlists_user_id').on(table.userId),
+}));
 
 export const watchlistItems = sqliteTable('watchlist_items', {
   id: text('id').primaryKey(),
@@ -76,9 +76,9 @@ export const watchlistItems = sqliteTable('watchlist_items', {
   symbol: text('symbol').notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
   addedAt: text('added_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  uniqueIndex('idx_watchlist_items_unique').on(table.watchlistId, table.symbol),
-]);
+}, (table) => ({
+  watchlistSymbolUniq: uniqueIndex('idx_watchlist_items_unique').on(table.watchlistId, table.symbol),
+}));
 
 export const alerts = sqliteTable('alerts', {
   id: text('id').primaryKey(),
@@ -89,10 +89,10 @@ export const alerts = sqliteTable('alerts', {
   active: integer('active').notNull().default(1),
   triggeredAt: text('triggered_at'),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  index('idx_alerts_user_id').on(table.userId),
-  index('idx_alerts_active_symbol').on(table.active, table.symbol),
-]);
+}, (table) => ({
+  userIdIdx: index('idx_alerts_user_id').on(table.userId),
+  activeSymbolIdx: index('idx_alerts_active_symbol').on(table.active, table.symbol),
+}));
 
 export const goals = sqliteTable('goals', {
   id: text('id').primaryKey(),
@@ -103,13 +103,13 @@ export const goals = sqliteTable('goals', {
   monthlyContribution: real('monthly_contribution'),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString()),
-}, (table) => [
-  index('idx_goals_user_id').on(table.userId),
-]);
+}, (table) => ({
+  userIdIdx: index('idx_goals_user_id').on(table.userId),
+}));
 
 export const goalPortfolios = sqliteTable('goal_portfolios', {
   goalId: text('goal_id').notNull().references(() => goals.id, { onDelete: 'cascade' }),
   portfolioId: text('portfolio_id').notNull().references(() => portfolios.id, { onDelete: 'cascade' }),
-}, (table) => [
-  uniqueIndex('idx_goal_portfolios_pk').on(table.goalId, table.portfolioId),
-]);
+}, (table) => ({
+  pk: uniqueIndex('idx_goal_portfolios_pk').on(table.goalId, table.portfolioId),
+}));
