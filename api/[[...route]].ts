@@ -3,13 +3,13 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { setCookie, getCookie, deleteCookie } from 'hono/cookie';
 import { z } from 'zod';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/libsql';
 import { createClient } from '@libsql/client/web';
 import * as jose from 'jose';
 import bcrypt from 'bcryptjs';
 import { nanoid } from 'nanoid';
-import { sqliteTable, text, real, integer, uniqueIndex, index } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, real, index } from 'drizzle-orm/sqlite-core';
 
 export const runtime = 'nodejs';
 
