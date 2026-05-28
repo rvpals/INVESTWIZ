@@ -5,7 +5,7 @@ import { setCookie, getCookie, deleteCookie } from 'hono/cookie';
 import { z } from 'zod';
 import { eq, and } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/libsql';
-import { createClient } from '@libsql/client';
+import { createClient } from '@libsql/client/web';
 import * as jose from 'jose';
 import bcrypt from 'bcryptjs';
 import { nanoid } from 'nanoid';
@@ -112,14 +112,26 @@ app.onError((err, c) => {
   return c.json({ error: { code: 'INTERNAL_ERROR', message: err.message } }, 500);
 });
 
-// Health
+// Health (no DB call — confirms routing works)
 app.get('/health', (c) => {
   return c.json({
     status: 'ok',
-    hasDbUrl: !!process.env.DATABASE_URL,
-    hasToken: !!process.env.DATABASE_AUTH_TOKEN,
-    hasJwt: !!process.env.JWT_SECRET,
+    dbUrl: process.env.DATABASE_URL ? 'set' : 'missing',
+    dbToken: process.env.DATABASE_AUTH_TOKEN ? 'set' : 'missing',
+    jwt: process.env.JWT_SECRET ? 'set' : 'missing',
+    time: new Date().toISOString(),
   });
+});
+
+// DB test endpoint
+app.get('/health/db', async (c) => {
+  try {
+    const result = await db.select().from(users).limit(1);
+    return c.json({ status: 'db_ok', userCount: result.length });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return c.json({ status: 'db_error', error: message }, 500);
+  }
 });
 
 // Auth
