@@ -1,20 +1,26 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { logger } from 'hono/logger';
 import { authRoutes } from './routes/auth';
 import { portfolioRoutes } from './routes/portfolios';
 import { marketRoutes } from './routes/market';
 
 const app = new Hono().basePath('/api');
 
-app.use('*', logger());
 app.use(
   '*',
   cors({
-    origin: ['http://localhost:5173'],
+    origin: (origin) => origin || '*',
     credentials: true,
   })
 );
+
+app.onError((err, c) => {
+  console.error('Unhandled error:', err);
+  return c.json(
+    { error: { code: 'INTERNAL_ERROR', message: err.message || 'Internal server error' } },
+    500
+  );
+});
 
 app.route('/auth', authRoutes);
 app.route('/portfolios', portfolioRoutes);

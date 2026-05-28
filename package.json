@@ -24,7 +24,7 @@
     "@libsql/client": "^0.14.0",
     "@radix-ui/react-icons": "^1.3.0",
     "@tanstack/react-query": "^5.60.0",
-    "argon2": "^0.41.0",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dotenv": "^17.4.2",
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
+    "@types/bcryptjs": "^3.0.0",
     "@types/node": "^25.9.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

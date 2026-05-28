@@ -50,8 +50,8 @@ authRoutes.post('/register', async (c) => {
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
   });
 
-  setCookie(c, 'token', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 900, path: '/' });
-  setCookie(c, 'refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 604800, path: '/' });
+  setCookie(c, 'token', accessToken, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: 900, path: '/' });
+  setCookie(c, 'refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: 604800, path: '/' });
 
   return c.json({ user: { id, email, name, createdAt: new Date().toISOString() } }, 201);
 });
@@ -85,8 +85,8 @@ authRoutes.post('/login', async (c) => {
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
   });
 
-  setCookie(c, 'token', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 900, path: '/' });
-  setCookie(c, 'refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 604800, path: '/' });
+  setCookie(c, 'token', accessToken, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: 900, path: '/' });
+  setCookie(c, 'refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: 604800, path: '/' });
 
   return c.json({ user: { id: user.id, email: user.email, name: user.name } });
 });
@@ -102,7 +102,7 @@ authRoutes.post('/refresh', async (c) => {
     const userId = payload.sub as string;
 
     const accessToken = await createAccessToken(userId);
-    setCookie(c, 'token', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict', maxAge: 900, path: '/' });
+    setCookie(c, 'token', accessToken, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: 900, path: '/' });
 
     return c.json({ success: true });
   } catch {
